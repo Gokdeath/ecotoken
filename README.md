@@ -1,4 +1,7 @@
 # 🌱 EcoToken
+# 🚀 EcoToken
+
+Puedes ver la aplicación desplegada en producción aquí: [Visitar EcoToken](https://ecotoken-tan.vercel.app)
 
 > **Plataforma comunitaria de créditos de carbono descentralizados con IA y Blockchain**
 
