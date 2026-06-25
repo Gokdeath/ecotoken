@@ -200,16 +200,6 @@ node index.js
 
 ---
 
-## Cómo contribuir
-
-1. Hacé fork del repositorio
-2. Creá una branch: `git checkout -b feature/nueva-funcionalidad`
-3. Commiteá tus cambios: `git commit -m "feat: descripción del cambio"`
-4. Pusheá a tu branch: `git push origin feature/nueva-funcionalidad`
-5. Abrí un Pull Request describiendo los cambios
-
----
-
 ## Licencia
 
 Este proyecto está bajo la licencia **MIT**. Podés usarlo, modificarlo y distribuirlo libremente con atribución. Ver archivo [`LICENSE`](./LICENSE) para más detalles.
