@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum ActionType {
+  RECICLAJE
+  BICICLETA
+  ENERGIA_SOLAR
+  COMPOSTAJE
+  TRANSPORTE_PUBLICO
+}
+
+enum ValidationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum TransactionType {
+  EARNED
+  ADJUSTMENT
+}
+
+model User {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String   @unique
+  password  String
+  role      UserRole @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  wallet       Wallet?
+  actions      Action[]
+  transactions Transaction[]
+}
+
+model Wallet {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  balance   Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Action {
+  id              String           @id @default(cuid())
+  userId          String
+  type            ActionType
+  amount          Float
+  description     String
+  imageUrl        String?
+  status          ValidationStatus @default(PENDING)
+  aiConfidence    Int
+  aiObservation   String
+  co2Compensated  Float
+  tokensAwarded   Int
+  createdAt       DateTime         @default(now())
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+  blocks       Block[]
+}
+
+model Transaction {
+  id        String          @id @default(cuid())
+  userId    String
+  actionId  String?
+  blockId   Int?
+  type      TransactionType @default(EARNED)
+  amount    Int
+  note      String
+  createdAt DateTime        @default(now())
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action Action? @relation(fields: [actionId], references: [id], onDelete: SetNull)
+  block  Block?  @relation(fields: [blockId], references: [id], onDelete: SetNull)
+}
+
+model Block {
+  id           Int      @id @default(autoincrement())
+  hash         String   @unique
+  previousHash String
+  timestamp    DateTime @default(now())
+  data         String
+  nonce        Int
+  actionId     String?
+
+  action       Action?       @relation(fields: [actionId], references: [id], onDelete: SetNull)
+  transactions Transaction[]
+}

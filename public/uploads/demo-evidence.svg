@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600" role="img" aria-label="Evidencia EcoToken demo">
+  <rect width="900" height="600" fill="#f8fafc"/>
+  <circle cx="450" cy="280" r="150" fill="#dcfce7"/>
+  <path d="M322 306c82-15 120-84 256-62-41 100-131 154-256 62Z" fill="#22c55e"/>
+  <path d="M355 302c80 1 137-23 193-55" stroke="#14532d" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <text x="450" y="500" fill="#14532d" font-family="Arial, sans-serif" font-size="38" text-anchor="middle" font-weight="700">EcoToken Demo</text>
+</svg>
