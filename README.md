@@ -1,123 +1,223 @@
-# EcoToken
+# 🌱 EcoToken
 
-EcoToken es una plataforma academica que simula creditos de carbono con IA y blockchain. No usa criptomonedas reales, smart contracts reales, Solidity, ERC20 ni transacciones blockchain reales.
+> **Plataforma comunitaria de créditos de carbono descentralizados con IA y Blockchain**
 
-## Estado de deploy
+![License](https://img.shields.io/badge/license-MIT-green)
+![Blockchain](https://img.shields.io/badge/blockchain-Polygon%20Mumbai-8247e5)
+![Solidity](https://img.shields.io/badge/solidity-0.8.x-363636)
+![Python](https://img.shields.io/badge/python-3.10+-3776ab)
+![React](https://img.shields.io/badge/frontend-React%20%2B%20ethers.js-61dafb)
 
-El proyecto esta preparado para:
+---
 
-- Subirse a GitHub.
-- Desplegarse en Vercel.
-- Usar PostgreSQL con Prisma.
-- Usar Vercel Blob para evidencias fotograficas en produccion.
-- Mantener fallback local para uploads durante desarrollo.
+## ¿Qué es EcoToken?
 
-## Stack
+EcoToken es una DApp (aplicación descentralizada) que permite a cualquier ciudadano **registrar acciones sustentables**, validar su impacto ambiental mediante **Inteligencia Artificial** y recibir **créditos de carbono tokenizados (ECT)** de forma automática en su wallet.
 
-- Next.js 15 con App Router
-- React y TypeScript
-- TailwindCSS
-- API Routes de Next.js
-- Prisma ORM
-- PostgreSQL
-- Vercel Blob
-- bcrypt y JWT
-- Recharts
-- Lucide React
+> 💡 **1 ECT = 1 kg de CO₂ compensado verificado.** Los tokens pueden donarse a ONGs, intercambiarse entre usuarios o venderse a empresas con metas ESG.
 
-## Estructura
+---
 
-```text
-app/                 Rutas Next.js, paginas y API routes
-frontend/components/ Componentes visuales reutilizables
-backend/auth/        Sesion, JWT, bcrypt y guards de usuario
-backend/db/          Cliente Prisma
-backend/services/    IA simulada, blockchain, storage y estadisticas
-prisma/              Schema, migraciones y seed
-public/uploads/      Fallback local de imagenes
-types/               Tipos compartidos
+## El problema que resuelve
+
+Los mercados de créditos de carbono existentes están diseñados para grandes corporaciones. El ciudadano común que recicla, usa bicicleta o instala paneles solares no recibe ningún incentivo formal ni económico por sus acciones. EcoToken cierra esa brecha.
+
+---
+
+## Flujo del sistema
+
+```
+Usuario registra acción
+        ↓
+Foto sube a IPFS (hash CID on-chain)
+        ↓
+IA valida el impacto (CO₂ en kg)
+        ↓
+Oráculo firma y llama al smart contract
+        ↓
+Smart contract emite ECT a la wallet del usuario
+        ↓
+Dashboard comunitario se actualiza
 ```
 
-## Variables de entorno
+---
 
-Crear `.env` local o configurar estas variables en Vercel:
+## Stack tecnológico
 
-```bash
-DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/ecotoken?schema=public"
-JWT_SECRET="un-secreto-largo-y-seguro"
-BLOB_READ_WRITE_TOKEN="token-de-vercel-blob"
+| Capa | Tecnología | Rol |
+|------|-----------|-----|
+| Frontend | React + ethers.js | Interfaz de usuario y conexión con MetaMask |
+| Smart Contracts | Solidity + Hardhat | Token ERC-20 y lógica de registro de acciones |
+| Blockchain | Polygon Mumbai (testnet) | Red rápida y de bajo costo |
+| Almacenamiento | IPFS + Pinata | Evidencias fotográficas descentralizadas |
+| IA / ML | Python + scikit-learn | Validación y cuantificación del impacto |
+| Backend / Oráculo | Node.js + Express | Puente entre la IA y el smart contract |
+| Base de datos | PostgreSQL | Registro de usuarios y acciones pendientes |
+| Deploy | Vercel + Alchemy | Hosting frontend y nodo RPC en Polygon |
+
+---
+
+## Inteligencia Artificial
+
+La IA actúa como árbitro objetivo del sistema. Tres modelos trabajan en conjunto:
+
+- **Regresión supervisada** (scikit-learn) — estima los kg de CO₂ compensados por tipo y cantidad de acción.
+- **CNN** (red neuronal convolucional) — analiza la foto de evidencia y verifica que corresponda a la acción declarada.
+- **Isolation Forest** — detecta fraude: registros repetidos, metadatos manipulados, patrones anómalos.
+
+La IA expone una **API REST en Python/Flask** que el backend consume y cuyo resultado se transmite al smart contract via oráculo.
+
+---
+
+## Conceptos teóricos aplicados
+
+| Concepto | Aplicación en EcoToken |
+|----------|----------------------|
+| **Merkle Tree** | Verifica integridad de registros sin descargar toda la cadena |
+| **Hash SHA-256** | Identifica cada acción de forma única e inmutable |
+| **Smart Contract** | Automatiza la emisión de ECT al validar una acción |
+| **ERC-20** | Estándar del token EcoToken (transferible, divisible) |
+| **Oráculo** | Puente entre el resultado de la IA y la blockchain |
+| **PoS (Polygon)** | Consenso eficiente y de bajo consumo energético |
+| **Tokenización** | Convierte acciones sustentables en créditos de carbono |
+| **Regresión (ML)** | Predice las toneladas de CO₂ por acción registrada |
+
+---
+
+## Estructura del proyecto
+
+```
+ecotoken/
+├── contracts/
+│   ├── EcoToken.sol          # Token ERC-20 principal (ECT)
+│   └── EcoRegistry.sol       # Registro de acciones sustentables
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── components/
+│   │   └── hooks/
+│   └── package.json
+├── ai-validator/
+│   ├── model.py              # Regresión CO₂ + CNN + Isolation Forest
+│   ├── api.py                # Flask REST API
+│   └── requirements.txt
+├── oracle/
+│   └── index.js              # Puente IA ↔ blockchain (Node.js)
+├── scripts/
+│   └── deploy.js             # Script de deploy con Hardhat
+├── hardhat.config.js
+├── .env.example
+└── README.md
 ```
 
-`BLOB_READ_WRITE_TOKEN` es opcional en desarrollo. Si no existe, las imagenes se guardan en `public/uploads`. En Vercel debe configurarse para que las evidencias sean persistentes.
+---
 
-## Instalacion local
+## Instalación
+
+### 1. Clonar el repositorio
 
 ```bash
+git clone https://github.com/tu-usuario/ecotoken.git
+cd ecotoken
+```
+
+### 2. Configurar variables de entorno
+
+```bash
+cp .env.example .env
+```
+
+| Variable | Descripción |
+|----------|-------------|
+| `POLYGON_RPC_URL` | URL del nodo RPC de Polygon Mumbai (ej. Alchemy) |
+| `PRIVATE_KEY` | Clave privada del oráculo — **nunca commitear** |
+| `PINATA_API_KEY` | API key de Pinata para subir a IPFS |
+| `AI_API_URL` | URL del servidor Flask del modelo IA |
+| `CONTRACT_ADDRESS` | Dirección del smart contract deployado |
+
+### 3. Instalar dependencias y deployar contratos
+
+```bash
+# Smart contracts
 npm install
-npm run prisma:migrate
-npm run prisma:seed
+npx hardhat compile
+npx hardhat run scripts/deploy.js --network mumbai
+```
+
+### 4. Levantar el frontend
+
+```bash
+cd frontend
+npm install
 npm run dev
 ```
 
-La app queda disponible en `http://localhost:3000`.
-
-## Deploy en Vercel
-
-1. Subir el repositorio a GitHub.
-2. Crear/importar proyecto en Vercel.
-3. Agregar una base PostgreSQL, por ejemplo Vercel Postgres, Neon o Supabase.
-4. Configurar `DATABASE_URL` en Vercel.
-5. Crear un store de Vercel Blob y configurar `BLOB_READ_WRITE_TOKEN`.
-6. Configurar `JWT_SECRET`.
-7. Vercel ejecuta las migraciones durante el build mediante `vercel.json`.
-8. Para cargar datos demo una vez, ejecutar localmente apuntando a la base de Vercel:
+### 5. Levantar el modelo IA
 
 ```bash
-npm run prisma:seed
+cd ai-validator
+pip install -r requirements.txt
+python api.py
 ```
 
-Tambien se pueden ejecutar migraciones manualmente si se prefiere:
+### 6. Levantar el oráculo
 
 ```bash
-npm run prisma:deploy
+cd oracle
+npm install
+node index.js
 ```
 
-9. Deployar desde Vercel.
+---
 
-## Credenciales demo
+## MVP — Funcionalidades
 
-Despues del seed:
+| Funcionalidad | Estado | Detalle |
+|--------------|--------|---------|
+| Registro de acciones sustentables | ✅ MVP | Formulario + foto de evidencia subida a IPFS |
+| Validación por IA del impacto | ✅ MVP | Modelo de regresión que devuelve kg de CO₂ |
+| Emisión automática de EcoTokens | ✅ MVP | Smart contract ERC-20 se ejecuta tras validación |
+| Wallet personal del usuario | ✅ MVP | Conexión con MetaMask, saldo visible en la app |
+| Panel de impacto comunitario | ✅ MVP | Dashboard con totales de CO₂ compensado |
+| Intercambio de tokens entre usuarios | 🔜 v2 | DEX interno o integración con Uniswap |
+| Certificados NFT para empresas | 🔜 v2 | ERC-721 como comprobante de compensación ESG |
+| DAO de gobernanza | 🔜 v3 | Votación comunitaria sobre categorías de acciones |
 
-```text
-admin@ecotoken.edu
-EcoToken123!
-```
+---
 
-Todos los usuarios demo usan la misma contrasena.
+## Impacto en la comunidad
 
-## Flujo principal
+**Beneficiarios directos:**
+- 👤 **Ciudadanos** — recompensa económica real por acciones que ya realizaban sin incentivo
+- 🌿 **ONGs ambientales** — reciben donaciones de tokens de forma transparente
+- 🏢 **Empresas ESG** — acceden a créditos de carbono verificados a bajo costo
+- 🏛️ **Municipios** — datos reales de impacto ambiental ciudadano para informes de sostenibilidad
 
-1. El usuario se registra o inicia sesion.
-2. Registra una accion sustentable con cantidad, descripcion y evidencia fotografica.
-3. `backend/services/aiService.ts` valida la accion con reglas matematicas locales.
-4. Si la accion es aprobada, el sistema acredita EcoTokens internos en la wallet.
-5. Se crea un bloque simulado con SHA-256, hash anterior, timestamp, data y nonce.
-6. La transaccion queda disponible en el historial y en el explorador blockchain.
+**Proyección:**
+- **0–6 meses:** ciudad piloto, 10.000 acciones validadas, alianza con una ONG local
+- **6–18 meses:** expansión a múltiples ciudades, integración con municipios, marketplace de tokens
+- **v3+:** arquitectura DAO autosustentable gestionada por la comunidad
 
-## Reglas IA simulada
+---
 
-- Reciclaje: 1 kg = 0.5 kg CO2
-- Bicicleta: 1 km = 0.2 kg CO2
-- Energia Solar: 1 kWh = 1.5 kg CO2
-- Compostaje: 1 kg = 0.35 kg CO2
-- Transporte Publico: 1 km = 0.12 kg CO2
+## Cómo contribuir
 
-Regla de tokens:
+1. Hacé fork del repositorio
+2. Creá una branch: `git checkout -b feature/nueva-funcionalidad`
+3. Commiteá tus cambios: `git commit -m "feat: descripción del cambio"`
+4. Pusheá a tu branch: `git push origin feature/nueva-funcionalidad`
+5. Abrí un Pull Request describiendo los cambios
 
-```text
-1 kg CO2 = 100 EcoTokens
-```
+---
 
-## Nota academica
+## Licencia
 
-La blockchain del proyecto es una simulacion educativa. Sirve para explicar hashing SHA-256, bloques, cadena enlazada, tokens internos, inmutabilidad y trazabilidad sin operar sobre una red blockchain real.
+Este proyecto está bajo la licencia **MIT**. Podés usarlo, modificarlo y distribuirlo libremente con atribución. Ver archivo [`LICENSE`](./LICENSE) para más detalles.
+
+---
+
+## Contexto académico
+
+> Proyecto desarrollado como Examen Final de **Teoría de Computación II**  
+> Universidad Champagnat — Lic. en Sistemas de Información  
+> Docente: Carolina Canessa · Demoday: 25/06/2026
